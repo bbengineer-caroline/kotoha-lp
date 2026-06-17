@@ -104,6 +104,15 @@
   .waka-card .lf { position: absolute; left: 34px; bottom: 96px; }
   .waka-card .cn { position: absolute; left: 34px; bottom: 48px; font-family: var(--k-font-tanka); font-size: 30px; letter-spacing: 0.1em; color: var(--kn-ink); }
   .waka-card .src { position: absolute; right: 34px; bottom: 40px; font-family: var(--kn-latin); font-style: italic; font-size: 13px; color: var(--kn-ink-ghost); }
+  /* waka carousel（色ごとに一首・横スクロール） */
+  .waka-rail { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 40px 40px 28px; margin-top: 4px; scrollbar-width: thin; scrollbar-color: var(--kn-ink-ghost) transparent; }
+  .waka-rail::-webkit-scrollbar { height: 6px; }
+  .waka-rail::-webkit-scrollbar-thumb { background: var(--kn-hairline); border-radius: 3px; }
+  .waka-rail .waka-card { flex: 0 0 auto; width: 320px; height: 380px; scroll-snap-align: center; }
+  @media (max-width: 900px) {
+    .waka-rail { padding: 28px 24px 22px; }
+    .waka-rail .waka-card { width: min(82vw, 320px); }
+  }
 
   /* privacy */
   .privacy { text-align: center; }
@@ -304,24 +313,9 @@
 <section id="waka">
   <div class="wrap">
     <div class="shead reveal"><span class="n">a thousand years</span><h2>千年前の心も、<br />同じ色をしていた。</h2></div>
-    <div class="waka-grid">
-      <div class="waka-card reveal">
-        <div class="vk">
-          <span>あかねさす</span><span>紫野行き</span><span>標野行き</span><span>野守は見ずや</span><span>君が袖振る</span>
-        </div>
-        <div class="leaf lf g-akane" style="width:64px;height:64px;"></div>
-        <div class="cn">茜</div>
-        <div class="src">額田王 ／ 万葉集</div>
-      </div>
-      <div class="reveal">
-        <p class="lead" style="max-width:480px;">
-          千三百年前、額田王が詠んだ恋の歌。あかね色に染まる野で、あの人がそっと袖を振る――。<br /><br />
-          その「あかね」も、あなたが今日えらぶ「茜」も、おなじ心の色。言の葉は、あなたの一日を、千年つづく歌の系譜にそっと連ねます。
-        </p>
-        <div style="margin-top:22px;font-family:var(--kn-latin);font-style:italic;font-size:13px;color:var(--kn-ink-ghost);">＃心の色で読む、古典和歌 ― 毎週水曜、SNSで連載中</div>
-      </div>
-    </div>
+    <p class="lead reveal">心の色に、ひとつずつ。千年の歌も、おなじ色を抱いていました。よこにスクロールして、八首を。</p>
   </div>
+  <div class="waka-rail reveal" id="wakaRail"></div>
 </section>
 
 <!-- PRIVACY -->
@@ -427,6 +421,32 @@
   var v3 = document.getElementById("vis3");
   ["fuji","sora","mitsu","wakanae","sango","akane"].forEach(function(k,i){
     var s=document.createElement("span"); s.className="leaf g-"+k; s.style.cssText="width:30px;height:30px;transform:rotate("+(-14+i*9)+"deg);"; v3.appendChild(s);
+  });
+
+  // waka carousel（色ごとに一首）
+  var WAKA = [
+    ["akane", ["あかねさす","紫野行き","標野行き","野守は見ずや","君が袖振る"], "額田王 ／ 万葉集"],
+    ["sango", ["春の野に","すみれ摘みにと","来し我ぞ","野をなつかしみ","一夜寝にける"], "山部赤人 ／ 万葉集"],
+    ["mitsu", ["わが園に","梅の花散る","ひさかたの","天より雪の","流れ来るかも"], "大伴旅人 ／ 万葉集"],
+    ["wakanae", ["石走る","垂水の上の","さわらびの","萌え出づる春に","なりにけるかも"], "志貴皇子 ／ 万葉集"],
+    ["sora", ["天の原","ふりさけ見れば","春日なる","三笠の山に","出でし月かも"], "阿倍仲麻呂 ／ 古今集"],
+    ["fuji", ["藤波の","影なす海の","底清み","沈く石をも","玉とぞ我が見る"], "大伴家持 ／ 万葉集"],
+    ["sakuranezu", ["花の色は","うつりにけりな","いたづらに","わが身世にふる","ながめせしまに"], "小野小町 ／ 古今集"],
+    ["sumi", ["暗きより","暗き道にぞ","入りぬべき","はるかに照らせ","山の端の月"], "和泉式部 ／ 拾遺集"]
+  ];
+  var nameByKey = {};
+  COLORS.forEach(function(c){ nameByKey[c[0]] = c[1]; });
+  var rail = document.getElementById("wakaRail");
+  WAKA.forEach(function(w){
+    var key = w[0], lines = w[1], src = w[2];
+    var card = document.createElement("div");
+    card.className = "waka-card";
+    var vk = '<div class="vk">' + lines.map(function(l){ return '<span>' + l + '</span>'; }).join('') + '</div>';
+    card.innerHTML = vk
+      + '<div class="leaf lf g-' + key + '" style="width:60px;height:60px;"></div>'
+      + '<div class="cn">' + nameByKey[key] + '</div>'
+      + '<div class="src">' + src + '</div>';
+    rail.appendChild(card);
   });
 
   // nav solidify
