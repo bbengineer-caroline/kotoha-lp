@@ -193,7 +193,7 @@
   }
 </style>
 </head>
-<body data-phase="prelaunch">
+<body data-phase="teaser">
 
 <!-- NAV -->
 <nav id="nav">
@@ -208,7 +208,6 @@
         <a href="#colors">心の色</a>
         <a href="#waka">古典和歌</a>
       </span>
-      <button class="cta" id="navCta" onclick="goCta()">事前登録する</button>
     </div>
   </div>
 </nav>
@@ -226,10 +225,7 @@
       <h1 class="big reveal">今日の心は、<br />何色？</h1>
       <p class="sub reveal">毎日の気持ちを、AIといっしょに三十一音の歌に。<br />たまった歌は、あなただけの庭になる。<br />日記より短く、投稿より深く。</p>
       <div class="actions reveal">
-        <button class="cta lg" id="heroCta" onclick="goCta()">事前登録する</button>
-        <span class="note only-teaser">先行案内をお届けします</span>
-        <span class="note only-prelaunch">公開と同時にお知らせします</span>
-        <span class="note show-launched">free · iOS</span>
+        <span class="note" style="font-family:var(--k-font-ui);font-style:normal;color:var(--kn-ink-faint);letter-spacing:0.04em;">iOS ・ 2026年 七月、まもなく。</span>
       </div>
     </div>
     <div class="phone-wrap reveal">
@@ -370,22 +366,8 @@
 <section class="final" id="register">
   <div class="auraF aura g-akane"></div>
   <div class="wrap inner reveal">
-    <h2 class="show-pre">はじまりを、お知らせします。</h2>
-    <h2 class="show-launched">また今夜、あなたの色で。</h2>
-    <p class="show-pre">公開は2026年 七月の予定。先行のご案内をメールでお届けします。</p>
-    <p class="show-launched">いま、App Storeでひらいています。今日の一首から。</p>
-
-    <!-- email (teaser / prelaunch) -->
-    <form class="regform show-pre" id="regform" onsubmit="return submitReg(event)">
-      <input type="email" id="regEmail" placeholder="メールアドレス" required />
-      <button type="submit" class="cta">事前登録</button>
-    </form>
-    <div class="regdone" id="regDone">ありがとう。はじまりを、お知らせします。</div>
-
-    <!-- stores (live) -->
-    <div class="stores show-launched">
-      <a class="storebtn" href="#"><span class="mincho" style="font-size:18px;">言</span> App Store でダウンロード</a>
-    </div>
+    <h2>2026年 七月、はじまります。</h2>
+    <p>今日の心を、三十一音に。<br />ことばが、葉になる場所を、いま育てています。</p>
   </div>
 </section>
 
@@ -398,7 +380,7 @@
     </div>
     <div style="text-align:right;">
       <div class="links">
-        <a href="#">プライバシーポリシー</a><a href="#">利用規約</a><a href="mailto:kotoha.studio.slayuicorn@gmail.com">お問い合わせ</a>
+        <a href="mailto:kotoha.studio.slayuicorn@gmail.com">お問い合わせ</a>
       </div>
       <div class="copy" style="margin-top:14px;">© 2026 kotoha</div>
     </div>
@@ -469,26 +451,10 @@
     });
   });
 
-  // phase（公開版は prelaunch 固定。teaser/live/atelier に切り替えたいときは
-  // 下の setPhase 引数か、<body data-phase="..."> を変える）
-  function setPhase(p){
-    document.body.setAttribute("data-phase", p);
-    var label = (p==="live" || p==="atelier") ? "App Store" : "事前登録する";
-    document.getElementById("navCta").textContent = label;
-    document.getElementById("heroCta").textContent = label;
-  }
-  function goCta(){
-    document.getElementById("register").scrollIntoView();
-    var e=document.getElementById("regEmail");
-    if(e) setTimeout(function(){ e.focus(); }, 600);
-  }
-  function submitReg(ev){
-    ev.preventDefault();
-    document.getElementById("regform").style.display="none";
-    document.getElementById("regDone").style.display="block";
-    return false;
-  }
-  setPhase("prelaunch");
+  // ローンチ段階（いまはティザー固定）。<body data-phase="..."> でも切替可:
+  // teaser / prelaunch / live / atelier
+  function setPhase(p){ document.body.setAttribute("data-phase", p); }
+  setPhase("teaser");
 </script>
 </body>
 </html>
