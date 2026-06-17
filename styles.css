@@ -1,0 +1,28 @@
+/* 言の葉 kotoha — LP design tokens
+   出典: brand-guidelines/brand.css（公式ブランドトークン）を自己完結化。
+   --kn-ink-soft / --kn-gold-1 / --kn-stage は LP 用に補完。 */
+
+@import url('https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500&family=Noto+Sans+JP:wght@300;400;500&family=Shippori+Mincho:wght@500&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&display=swap');
+
+:root {
+  /* fonts */
+  --k-font-tanka: 'Zen Old Mincho', 'Hiragino Mincho ProN', serif; /* 短歌・詩的見出し */
+  --k-font-ui:    'Noto Sans JP', 'Hiragino Sans', sans-serif;     /* UI本文・ラベル */
+  --k-font-mark:  'Shippori Mincho', serif;                        /* ワードマーク */
+  --kn-latin:     'Cormorant Garamond', serif;                     /* イタリック英字 */
+
+  /* surfaces */
+  --kn-paper:    #FBF8F1;
+  --kn-stage:    #F4EFE4; /* セクション背景（紙より一段あたたかい） */
+  --kn-hairline: rgba(51, 48, 42, 0.12);
+
+  /* ink */
+  --kn-ink:       #33302A;
+  --kn-ink-soft:  #4A463E; /* 本文（brand: --kn-ink-body 相当） */
+  --kn-ink-faint: #8E887C;
+  --kn-ink-ghost: #B3AC9D;
+
+  /* accents */
+  --kn-gold-1: #A8894A; /* brand: --kn-gold */
+  --kn-sora-1: #6FA8D2;
+}

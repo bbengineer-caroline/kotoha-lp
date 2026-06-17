@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>言の葉 — 今日の心は、何色？</title>
+<meta name="description" content="毎日の気持ちを、AIといっしょに三十一音の歌に。たまった歌は、あなただけの庭になる。言の葉 kotoha。" />
+<meta name="theme-color" content="#FBF8F1" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<!-- Open Graph / Twitter（og:url・og:image はドメイン確定＆OG画像作成後に追加） -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="言の葉 kotoha" />
+<meta property="og:title" content="言の葉 — 今日の心は、何色？" />
+<meta property="og:description" content="毎日の気持ちを、AIといっしょに三十一音の歌に。たまった歌は、あなただけの庭になる。言の葉 kotoha。" />
+<meta property="og:locale" content="ja_JP" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="言の葉 — 今日の心は、何色？" />
+<meta name="twitter:description" content="毎日の気持ちを、AIといっしょに三十一音の歌に。たまった歌は、あなただけの庭になる。" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--kn-paper); color: var(--kn-ink); font-family: var(--k-font-ui); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  .mincho { font-family: var(--k-font-tanka); }
+  .latin { font-family: var(--kn-latin); font-style: italic; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+
+  /* leaf + aura primitives */
+  .leaf { border-radius: 4% 72% 6% 72%; display: inline-block; position: relative; }
+  .leaf::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle at 30% 24%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 52%); }
+  .aura { border-radius: 50%; filter: blur(46px); pointer-events: none; }
+
+  /* gradients per color */
+  .g-akane{background:linear-gradient(135deg,#E88A93,#C44A5E);} .g-sango{background:linear-gradient(135deg,#F8C5B4,#EE8F7F);}
+  .g-mitsu{background:linear-gradient(135deg,#F3D784,#E0AC3B);} .g-wakanae{background:linear-gradient(135deg,#C6DA9E,#92B564);}
+  .g-sora{background:linear-gradient(135deg,#B0D5EA,#6FA8D2);} .g-fuji{background:linear-gradient(135deg,#C3B5DC,#9483BE);}
+  .g-sakuranezu{background:linear-gradient(135deg,#D8C3CA,#B295A0);} .g-sumi{background:linear-gradient(135deg,#8B857A,#4A4742);}
+
+  /* ── nav ── */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; transition: background .3s, border-color .3s, padding .3s; border-bottom: 1px solid transparent; }
+  nav.solid { background: rgba(251,248,241,0.88); backdrop-filter: blur(12px); border-bottom-color: var(--kn-hairline); }
+  nav .row { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; padding-bottom: 20px; }
+  .mark { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; }
+  .mark .k { font-family: var(--k-font-mark); font-weight: 500; font-size: 19px; letter-spacing: 0.16em; color: var(--kn-ink); }
+  .mark .l { font-family: var(--kn-latin); font-style: italic; font-size: 13px; color: var(--kn-ink-ghost); }
+  .mark .dot { width: 8px; height: 8px; }
+  .navlinks { display: flex; align-items: center; gap: 30px; }
+  .navlinks a { font-size: 12.5px; letter-spacing: 0.12em; color: var(--kn-ink-soft); }
+  .navlinks a:hover { color: var(--kn-ink); }
+  .navlinks .links-inline { display: flex; gap: 30px; }
+  .cta { font-size: 12.5px; letter-spacing: 0.14em; color: var(--kn-paper); background: var(--kn-ink); border-radius: 999px; padding: 11px 22px; border: none; cursor: pointer; white-space: nowrap; transition: opacity .2s; }
+  .cta:hover { opacity: 0.82; }
+  .cta.lg { padding: 16px 30px; font-size: 13px; }
+  .navlinks .menutoggle { display: none; }
+
+  /* ── hero ── */
+  header.hero { position: relative; padding: 168px 0 90px; overflow: hidden; }
+  .hero .aura1 { position: absolute; top: -120px; right: 8%; width: 460px; height: 460px; opacity: 0.55; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 40px; align-items: center; position: relative; }
+  .over { font-size: 11px; letter-spacing: 0.26em; color: var(--kn-ink-faint); text-transform: none; font-weight: 500; }
+  h1.big { font-family: var(--k-font-tanka); font-weight: 500; font-size: 60px; line-height: 1.55; letter-spacing: 0.06em; margin: 22px 0 0; }
+  .hero .sub { font-size: 15px; line-height: 2.1; color: var(--kn-ink-soft); margin-top: 24px; max-width: 440px; }
+  .hero .actions { display: flex; align-items: center; gap: 16px; margin-top: 34px; flex-wrap: wrap; }
+  .hero .actions .note { font-family: var(--kn-latin); font-style: italic; font-size: 13px; color: var(--kn-ink-ghost); }
+
+  /* phone */
+  .phone-wrap { justify-self: center; position: relative; }
+  .phone { width: 270px; height: 552px; border-radius: 38px; background: var(--kn-paper); border: 1px solid rgba(51,48,42,0.14); box-shadow: 0 40px 90px rgba(51,48,42,0.18); position: relative; overflow: hidden; }
+  .phone .pa { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); width: 200px; height: 200px; opacity: 0.9; transition: background .5s; }
+  .phone .q { position: absolute; top: 120px; left: 0; right: 0; text-align: center; font-family: var(--k-font-tanka); font-size: 21px; line-height: 1.75; color: var(--kn-ink); letter-spacing: 0.04em; }
+  .phone .dots { position: absolute; bottom: 118px; left: 28px; right: 28px; display: flex; justify-content: space-between; }
+  .phone .dots .d { width: 17px; height: 17px; border-radius: 50%; cursor: pointer; transition: transform .2s, box-shadow .2s, border .2s; border: 2px solid transparent; }
+  .phone .dots .d.on { transform: scale(1.4); border-color: #fff; box-shadow: 0 3px 10px rgba(0,0,0,0.18); }
+  .phone .pbtn { position: absolute; bottom: 50px; left: 26px; right: 26px; height: 44px; border-radius: 999px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11.5px; letter-spacing: 0.2em; transition: background .5s; }
+  .phone .pname { position: absolute; bottom: 88px; left: 0; right: 0; text-align: center; font-family: var(--k-font-tanka); font-size: 12px; letter-spacing: 0.18em; color: var(--kn-ink-faint); }
+
+  /* ── section frame ── */
+  section { position: relative; padding: 90px 0; }
+  .shead { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
+  .shead .n { font-family: var(--kn-latin); font-style: italic; font-size: 14px; color: var(--kn-ink-ghost); }
+  h2 { font-family: var(--k-font-tanka); font-weight: 500; font-size: 34px; letter-spacing: 0.06em; margin: 0; line-height: 1.5; }
+  .lead { font-size: 14px; line-height: 2.1; color: var(--kn-ink-soft); max-width: 560px; margin-top: 12px; }
+
+  /* steps */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+  .step .num { font-family: var(--k-font-tanka); font-size: 15px; color: var(--kn-gold-1); letter-spacing: 0.3em; }
+  .step h3 { font-family: var(--k-font-tanka); font-weight: 500; font-size: 22px; letter-spacing: 0.07em; margin: 12px 0 0; color: var(--kn-ink); }
+  .step p { font-size: 12.5px; line-height: 2; color: var(--kn-ink-soft); margin: 12px 0 18px; }
+  .step .vis { height: 70px; display: flex; align-items: center; gap: 8px; }
+
+  /* color strip */
+  .colors { padding: 0; }
+  .colorstrip { display: grid; grid-template-columns: repeat(8, 1fr); }
+  .colorstrip .c { height: 230px; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px 14px; transition: flex .3s; }
+  .colorstrip .c .nm { font-family: var(--k-font-tanka); font-size: 20px; color: #fff; letter-spacing: 0.1em; }
+  .colorstrip .c .ds { font-size: 10px; color: rgba(255,255,255,0.9); margin-top: 6px; line-height: 1.6; letter-spacing: 0.02em; }
+
+  /* waka */
+  .waka-grid { display: grid; grid-template-columns: 360px 1fr; gap: 50px; align-items: center; margin-top: 40px; }
+  .waka-card { width: 360px; height: 400px; background: var(--kn-paper); border: 1px solid var(--kn-hairline); border-radius: 16px; position: relative; box-shadow: 0 16px 40px rgba(51,48,42,0.08); overflow: hidden; }
+  .waka-card .vk { position: absolute; top: 44px; right: 40px; display: flex; flex-direction: row-reverse; gap: 13px; }
+  .waka-card .vk span { writing-mode: vertical-rl; font-family: var(--k-font-tanka); font-size: 19px; letter-spacing: 0.16em; line-height: 1.5; color: var(--kn-ink); }
+  .waka-card .lf { position: absolute; left: 34px; bottom: 96px; }
+  .waka-card .cn { position: absolute; left: 34px; bottom: 48px; font-family: var(--k-font-tanka); font-size: 30px; letter-spacing: 0.1em; color: var(--kn-ink); }
+  .waka-card .src { position: absolute; right: 34px; bottom: 40px; font-family: var(--kn-latin); font-style: italic; font-size: 13px; color: var(--kn-ink-ghost); }
+
+  /* privacy */
+  .privacy { text-align: center; }
+  .privacy h2 { font-size: 40px; }
+  .privacy .tags { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
+  .privacy .tags span { font-size: 12px; letter-spacing: 0.1em; color: var(--kn-ink-soft); border: 1px solid var(--kn-hairline); border-radius: 999px; padding: 8px 18px; }
+
+  /* final CTA */
+  .final { position: relative; overflow: hidden; }
+  .final .auraF { position: absolute; top: -160px; left: 50%; transform: translateX(-50%); width: 620px; height: 620px; opacity: 0.5; }
+  .final .inner { position: relative; text-align: center; }
+  .final h2 { font-size: 38px; }
+  .final p { font-size: 14px; color: var(--kn-ink-soft); margin-top: 14px; line-height: 2; }
+  .regform { display: inline-flex; gap: 10px; margin-top: 28px; border: 1px solid var(--kn-hairline); border-radius: 999px; padding: 7px 7px 7px 22px; background: var(--kn-paper); max-width: 100%; }
+  .regform input { border: none; outline: none; background: transparent; font-family: var(--k-font-ui); font-size: 14px; color: var(--kn-ink); width: 240px; max-width: 50vw; }
+  .regform input::placeholder { color: var(--kn-ink-ghost); }
+  .stores { display: flex; gap: 14px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
+  .storebtn { display: inline-flex; align-items: center; gap: 10px; background: var(--kn-ink); color: var(--kn-paper); border-radius: 14px; padding: 13px 24px; font-size: 13px; letter-spacing: 0.08em; }
+  .regdone { margin-top: 22px; font-family: var(--k-font-tanka); font-size: 16px; color: var(--kn-ink); letter-spacing: 0.06em; display: none; }
+
+  /* origin */
+  .origin { background: var(--kn-stage); }
+  .origin-inner { display: grid; grid-template-columns: 290px 1fr; gap: 54px; align-items: center; }
+  .origin-quote .vq { display: flex; flex-direction: row-reverse; gap: 16px; justify-content: center; }
+  .origin-quote .vq span { writing-mode: vertical-rl; font-family: var(--k-font-tanka); font-size: 25px; letter-spacing: 0.18em; line-height: 1.5; color: var(--kn-ink); }
+  .origin-quote .attr { text-align: center; margin-top: 24px; font-family: var(--kn-latin); font-style: italic; font-size: 12px; color: var(--kn-ink-ghost); }
+  .origin-body .shead { margin-bottom: 10px; }
+  .metaphors { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 30px; }
+  .metaphors .m { text-align: center; }
+  .metaphors .mi { height: 38px; display: flex; align-items: center; justify-content: center; }
+  .metaphors .mt { font-family: var(--k-font-tanka); font-size: 19px; color: var(--kn-ink); margin-top: 10px; letter-spacing: 0.08em; }
+  .metaphors .mc { font-size: 11px; color: var(--kn-ink-soft); margin-top: 6px; line-height: 1.6; }
+  .metaphors .mc small { display: block; color: var(--kn-ink-faint); font-size: 10px; margin-top: 3px; }
+  .windline { display: flex; flex-direction: column; gap: 3px; align-items: center; }
+  .windline i { display: block; height: 1.5px; border-radius: 2px; background: var(--kn-sora-1); }
+  /* atelier */
+  .atelier { background: linear-gradient(180deg, var(--kn-paper) 0%, #F4EEDF 100%); }
+  .atelier-card { max-width: 540px; margin: 34px auto 0; background: var(--kn-paper); border: 1px solid var(--kn-gold-1); border-radius: 20px; padding: 32px 34px; box-shadow: 0 18px 50px rgba(168,137,74,0.16); }
+  .feat { list-style: none; padding: 0; margin: 20px 0; }
+  .feat li { font-size: 13px; color: var(--kn-ink-soft); padding: 11px 0 11px 28px; border-top: 1px solid var(--kn-hairline); position: relative; }
+  .feat li::before { content: ""; position: absolute; left: 2px; top: 15px; width: 12px; height: 14px; border-radius: 60% 60% 60% 0; background: var(--kn-gold-1); transform: rotate(40deg); opacity: 0.85; }
+  @media (max-width: 900px) {
+    .origin-inner { grid-template-columns: 1fr; gap: 34px; }
+    .metaphors { gap: 8px; }
+    .metaphors .mt { font-size: 16px; } .metaphors .mc { font-size: 9.5px; }
+  }
+
+  /* footer */
+  footer { border-top: 1px solid var(--kn-hairline); padding: 46px 0 60px; }
+  .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .foot .links { display: flex; gap: 22px; flex-wrap: wrap; }
+  .foot .links a { font-size: 11.5px; letter-spacing: 0.08em; color: var(--kn-ink-faint); }
+  .foot .copy { font-family: var(--kn-latin); font-style: italic; font-size: 12px; color: var(--kn-ink-ghost); }
+
+  /* phase visibility（公開時は prelaunch 固定。値を切り替えれば各フェーズの表示になる） */
+  .only-teaser, .only-prelaunch, .only-atelier, .show-pre, .show-launched { display: none; }
+  body[data-phase="teaser"] .only-teaser { display: revert; }
+  body[data-phase="prelaunch"] .only-prelaunch { display: revert; }
+  body[data-phase="teaser"] .show-pre, body[data-phase="prelaunch"] .show-pre { display: revert; }
+  body[data-phase="live"] .show-launched, body[data-phase="atelier"] .show-launched { display: revert; }
+  body[data-phase="atelier"] .only-atelier { display: revert; }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s cubic-bezier(.33,0,.2,1), transform .7s cubic-bezier(.33,0,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* responsive */
+  @media (max-width: 900px) {
+    .wrap { padding: 0 24px; }
+    .navlinks .links-inline { display: none; }
+    h1.big { font-size: 44px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 10px; }
+    .phone-wrap { margin-top: 30px; }
+    header.hero { padding: 130px 0 60px; }
+    .steps { grid-template-columns: 1fr; gap: 26px; }
+    .colorstrip { grid-template-columns: repeat(4, 1fr); }
+    .colorstrip .c { height: 180px; }
+    .waka-grid { grid-template-columns: 1fr; gap: 30px; justify-items: center; }
+    h2 { font-size: 27px; } .privacy h2, .final h2 { font-size: 30px; }
+    section { padding: 64px 0; }
+  }
+  @media (max-width: 480px) {
+    .colorstrip { grid-template-columns: repeat(2, 1fr); }
+    .waka-card { width: 100%; max-width: 360px; }
+    .regform input { width: 160px; }
+  }
+</style>
+</head>
+<body data-phase="prelaunch">
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap row">
+    <a class="mark" href="#top">
+      <span class="k">言の葉</span><span class="l">kotoha</span>
+      <span class="leaf dot g-fuji"></span>
+    </a>
+    <div class="navlinks">
+      <span class="links-inline">
+        <a href="#about">言の葉とは</a>
+        <a href="#colors">心の色</a>
+        <a href="#waka">古典和歌</a>
+      </span>
+      <button class="cta" id="navCta" onclick="goCta()">事前登録する</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="aura1 aura g-fuji"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="over reveal">
+        <span class="only-teaser">2026年 七月、はじまります</span>
+        <span class="only-prelaunch">まもなく公開 ・ 事前登録受付中</span>
+        <span class="show-launched">iOS ・ 無料ではじめる</span>
+      </div>
+      <h1 class="big reveal">今日の心は、<br />何色？</h1>
+      <p class="sub reveal">毎日の気持ちを、AIといっしょに三十一音の歌に。<br />たまった歌は、あなただけの庭になる。<br />日記より短く、投稿より深く。</p>
+      <div class="actions reveal">
+        <button class="cta lg" id="heroCta" onclick="goCta()">事前登録する</button>
+        <span class="note only-teaser">先行案内をお届けします</span>
+        <span class="note only-prelaunch">公開と同時にお知らせします</span>
+        <span class="note show-launched">free · iOS</span>
+      </div>
+    </div>
+    <div class="phone-wrap reveal">
+      <div class="phone">
+        <div class="pa aura g-fuji" id="phoneAura"></div>
+        <div class="q">今日の心は、<br />何色？</div>
+        <div class="pname" id="phoneName">藤 ― ゆれて、まよう色</div>
+        <div class="dots" id="phoneDots"></div>
+        <div class="pbtn g-fuji" id="phoneBtn">この色で、詠む</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ORIGIN -->
+<section class="origin" id="origin">
+  <div class="wrap">
+    <div class="origin-inner">
+      <div class="origin-quote reveal">
+        <div class="vq">
+          <span>人の心を種として</span>
+          <span>よろづの言の葉とぞ</span>
+          <span>なれりける</span>
+        </div>
+        <div class="attr">古今和歌集 仮名序 ・ 紀貫之</div>
+      </div>
+      <div class="origin-body reveal">
+        <div class="shead"><span class="n">origin</span><h2>ことばは、心から生まれる葉。</h2></div>
+        <p class="lead">千年前、和歌集のはじめに、こう記されました。人の心を種として、言葉という葉が生い茂る――。言の葉は、その一節を、そのまま設計図にしています。</p>
+        <div class="metaphors">
+          <div class="m"><div class="mi"><span style="width:13px;height:13px;border-radius:50%;background:var(--kn-ink);display:inline-block;"></span></div><div class="mt">種</div><div class="mc">心<small>色をえらぶ</small></div></div>
+          <div class="m"><div class="mi"><span class="leaf g-wakanae" style="width:28px;height:28px;"></span></div><div class="mt">葉</div><div class="mc">ことば<small>歌が一枚の葉に</small></div></div>
+          <div class="m"><div class="mi"><span class="leaf g-fuji" style="width:17px;height:17px;margin-right:-6px;"></span><span class="leaf g-akane" style="width:22px;height:22px;"></span><span class="leaf g-sora" style="width:15px;height:15px;margin-left:-5px;"></span></div><div class="mt">庭</div><div class="mc">歌集<small>葉がたまり、庭に</small></div></div>
+          <div class="m"><div class="mi"><span class="windline"><i style="width:26px;"></i><i style="width:18px;"></i><i style="width:22px;"></i></span></div><div class="mt">風</div><div class="mc">交わり<small>誰かへ歌を運ぶ</small></div></div>
+          <div class="m"><div class="mi"><span style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #fff, var(--kn-sora-1));box-shadow:0 3px 7px rgba(111,168,210,0.4);display:inline-block;"></span></div><div class="mt">露</div><div class="mc">応え<small>そっと、ひとつぶ</small></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / STEPS -->
+<section id="about">
+  <div class="wrap">
+    <div class="shead reveal"><span class="n">about</span><h2>三つの所作で、一首になる。</h2></div>
+    <p class="lead reveal">うまく言葉にできない日も、色ならえらべる。書くのは数行でいい。あとは、AIがそっと整える。</p>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="num">一</div>
+        <h3>色をえらぶ</h3>
+        <p>ことばにならない日も、色ならえらべる。八つの伝統色から、今日の心を。</p>
+        <div class="vis" id="vis1"></div>
+      </div>
+      <div class="step reveal">
+        <div class="num">二</div>
+        <h3>ことばを落とす</h3>
+        <p>数行の日記でいい。AIが、あなたの言葉のまま三十一音に整える。</p>
+        <div class="vis"><span class="mincho" style="font-size:15px;line-height:1.9;color:var(--kn-ink-soft);letter-spacing:0.06em;">夕焼けに　言いそびれてた　ことのはを…</span></div>
+      </div>
+      <div class="step reveal">
+        <div class="num">三</div>
+        <h3>庭で育てる</h3>
+        <p>一日一葉。ひと月で、感情の色の風景ができる。誰にも見られない。</p>
+        <div class="vis" id="vis3"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLORS -->
+<section class="colors" id="colors">
+  <div class="wrap">
+    <div class="shead reveal"><span class="n">the eight colors</span><h2>心を、八つの色に。</h2></div>
+    <p class="lead reveal">怒りでも、寂しさでもなく――「茜」や「藤」。日本の伝統色が、名づけられなかった気持ちに、名前をくれる。</p>
+  </div>
+  <div class="colorstrip reveal" id="colorstrip" style="margin-top:46px;"></div>
+</section>
+
+<!-- WAKA -->
+<section id="waka">
+  <div class="wrap">
+    <div class="shead reveal"><span class="n">a thousand years</span><h2>千年前の心も、<br />同じ色をしていた。</h2></div>
+    <div class="waka-grid">
+      <div class="waka-card reveal">
+        <div class="vk">
+          <span>あかねさす</span><span>紫野行き</span><span>標野行き</span><span>野守は見ずや</span><span>君が袖振る</span>
+        </div>
+        <div class="leaf lf g-akane" style="width:64px;height:64px;"></div>
+        <div class="cn">茜</div>
+        <div class="src">額田王 ／ 万葉集</div>
+      </div>
+      <div class="reveal">
+        <p class="lead" style="max-width:480px;">
+          千三百年前、額田王が詠んだ恋の歌。あかね色に染まる野で、あの人がそっと袖を振る――。<br /><br />
+          その「あかね」も、あなたが今日えらぶ「茜」も、おなじ心の色。言の葉は、あなたの一日を、千年つづく歌の系譜にそっと連ねます。
+        </p>
+        <div style="margin-top:22px;font-family:var(--kn-latin);font-style:italic;font-size:13px;color:var(--kn-ink-ghost);">＃心の色で読む、古典和歌 ― 毎週水曜、SNSで連載中</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section class="privacy">
+  <div class="wrap reveal">
+    <h2>誰にも、見られない。</h2>
+    <p class="lead" style="margin:18px auto 0;text-align:center;">フォロワー数も、いいねの数もない。あなたの歌は、あなたの庭で育つだけ。<br />ここは、見られるために書く場所ではありません。</p>
+    <div class="tags">
+      <span>フォローなし</span><span>いいね数なし</span><span>広告で売らない</span><span>あなただけの庭</span>
+    </div>
+  </div>
+</section>
+
+<!-- ATELIER（課金後フェーズ） -->
+<section class="atelier only-atelier" id="atelier">
+  <div class="wrap">
+    <div class="shead reveal" style="justify-content:center;"><span class="n">atelier</span><h2 style="color:var(--kn-gold-1);">もっと、深める。</h2></div>
+    <p class="lead reveal" style="margin:0 auto;text-align:center;">無料でも、ずっと使えます。もっとことばに遊びたい人へ、言の葉 Atelier。</p>
+    <div class="atelier-card reveal">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div class="mincho" style="font-size:21px;letter-spacing:0.1em;color:var(--kn-ink);">言の葉 Atelier</div>
+        <div><span class="mincho" style="font-size:25px;color:var(--kn-gold-1);">¥580</span><span style="font-size:11px;color:var(--kn-ink-faint);"> ／月</span></div>
+      </div>
+      <div style="font-size:11px;color:var(--kn-ink-faint);margin-top:4px;text-align:right;">年額 ¥4,800（ふた月ぶん、おトク）</div>
+      <ul class="feat">
+        <li>ひとひら（AIクレジット）を、たっぷりと</li>
+        <li>心の色を、さらに増やす</li>
+        <li>季節でうつろう、アイコンの衣替え</li>
+        <li>歌集の書き出しと、紙のグッズ</li>
+      </ul>
+      <button class="cta lg" style="width:100%;background:var(--kn-gold-1);" onclick="goCta()">Atelierをひらく</button>
+      <div style="text-align:center;margin-top:14px;font-size:11px;color:var(--kn-ink-faint);">いつでも解約できます ・ 自分で詠むことは、ずっと無料</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final" id="register">
+  <div class="auraF aura g-akane"></div>
+  <div class="wrap inner reveal">
+    <h2 class="show-pre">はじまりを、お知らせします。</h2>
+    <h2 class="show-launched">また今夜、あなたの色で。</h2>
+    <p class="show-pre">公開は2026年 七月の予定。先行のご案内をメールでお届けします。</p>
+    <p class="show-launched">いま、App Storeでひらいています。今日の一首から。</p>
+
+    <!-- email (teaser / prelaunch) -->
+    <form class="regform show-pre" id="regform" onsubmit="return submitReg(event)">
+      <input type="email" id="regEmail" placeholder="メールアドレス" required />
+      <button type="submit" class="cta">事前登録</button>
+    </form>
+    <div class="regdone" id="regDone">ありがとう。はじまりを、お知らせします。</div>
+
+    <!-- stores (live) -->
+    <div class="stores show-launched">
+      <a class="storebtn" href="#"><span class="mincho" style="font-size:18px;">言</span> App Store でダウンロード</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="mark" href="#top"><span class="k">言の葉</span><span class="l">kotoha</span><span class="leaf dot g-fuji"></span></a>
+      <div style="font-size:11px;color:var(--kn-ink-faint);margin-top:14px;letter-spacing:0.06em;">心を、三十一音に。</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="links">
+        <a href="#">プライバシーポリシー</a><a href="#">利用規約</a><a href="mailto:kotoha.studio.slayuicorn@gmail.com">お問い合わせ</a>
+      </div>
+      <div class="copy" style="margin-top:14px;">© 2026 kotoha</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var COLORS = [
+    ["akane","茜","燃えのこる、夕焼けの色"],["sango","珊瑚","すこし照れている色"],
+    ["mitsu","蜜","あまやかしてほしい色"],["wakanae","若苗","はじまりたての色"],
+    ["sora","空","どこまでも遠い色"],["fuji","藤","ゆれて、まよう色"],
+    ["sakuranezu","桜鼠","思い出になりかけの色"],["sumi","墨","ことばにならない色"]
+  ];
+
+  // color strip
+  var strip = document.getElementById("colorstrip");
+  COLORS.forEach(function(c){
+    var d = document.createElement("div");
+    d.className = "c g-" + c[0];
+    d.innerHTML = '<div class="nm">'+c[1]+'</div><div class="ds">'+c[2]+'</div>';
+    strip.appendChild(d);
+  });
+
+  // phone dots
+  var dotsEl = document.getElementById("phoneDots");
+  COLORS.forEach(function(c, i){
+    var s = document.createElement("span");
+    s.className = "d g-" + c[0] + (c[0]==="fuji" ? " on" : "");
+    s.setAttribute("data-c", c[0]);
+    s.setAttribute("data-nm", c[1]);
+    s.setAttribute("data-ds", c[2]);
+    s.onclick = function(){ pickColor(c[0], c[1], c[2], s); };
+    dotsEl.appendChild(s);
+  });
+  function pickColor(key, nm, ds, el){
+    document.querySelectorAll("#phoneDots .d").forEach(function(x){ x.classList.remove("on"); });
+    el.classList.add("on");
+    document.getElementById("phoneAura").className = "pa aura g-" + key;
+    document.getElementById("phoneBtn").className = "pbtn g-" + key;
+    document.getElementById("phoneName").textContent = nm + " ― " + ds;
+  }
+
+  // step visuals
+  var v1 = document.getElementById("vis1");
+  ["akane","mitsu","sora","fuji"].forEach(function(k){
+    var s=document.createElement("span"); s.style.cssText="width:26px;height:26px;border-radius:50%;"; s.className="g-"+k; v1.appendChild(s);
+  });
+  var v3 = document.getElementById("vis3");
+  ["fuji","sora","mitsu","wakanae","sango","akane"].forEach(function(k,i){
+    var s=document.createElement("span"); s.className="leaf g-"+k; s.style.cssText="width:30px;height:30px;transform:rotate("+(-14+i*9)+"deg);"; v3.appendChild(s);
+  });
+
+  // nav solidify
+  var nav = document.getElementById("nav");
+  function onScroll(){ nav.classList.toggle("solid", window.scrollY > 30); }
+  window.addEventListener("scroll", onScroll); onScroll();
+
+  // reveal
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  // 初期表示域（ファーストビュー）はIO発火を待たず即座に表示する保険
+  requestAnimationFrame(function(){
+    document.querySelectorAll(".reveal").forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.96) el.classList.add("in");
+    });
+  });
+
+  // phase（公開版は prelaunch 固定。teaser/live/atelier に切り替えたいときは
+  // 下の setPhase 引数か、<body data-phase="..."> を変える）
+  function setPhase(p){
+    document.body.setAttribute("data-phase", p);
+    var label = (p==="live" || p==="atelier") ? "App Store" : "事前登録する";
+    document.getElementById("navCta").textContent = label;
+    document.getElementById("heroCta").textContent = label;
+  }
+  function goCta(){
+    document.getElementById("register").scrollIntoView();
+    var e=document.getElementById("regEmail");
+    if(e) setTimeout(function(){ e.focus(); }, 600);
+  }
+  function submitReg(ev){
+    ev.preventDefault();
+    document.getElementById("regform").style.display="none";
+    document.getElementById("regDone").style.display="block";
+    return false;
+  }
+  setPhase("prelaunch");
+</script>
+</body>
+</html>
