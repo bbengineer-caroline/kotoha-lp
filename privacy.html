@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>プライバシーポリシー — 言の葉 kotoha</title>
+<meta name="description" content="言の葉（kotoha）のプライバシーポリシー。" />
+<meta name="theme-color" content="#FBF8F1" />
+<meta name="robots" content="index,follow" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--kn-paper); color: var(--kn-ink-soft);
+         font-family: var(--k-font-ui); font-weight: 300; line-height: 1.95;
+         -webkit-font-smoothing: antialiased; }
+  .doc { max-width: 720px; margin: 0 auto; padding: 64px 28px 96px; }
+  .doc .home { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 40px;
+               font-size: 12.5px; letter-spacing: 0.14em; color: var(--kn-ink-faint); }
+  .doc .home:hover { color: var(--kn-ink); }
+  .doc .home .dot { width: 8px; height: 8px; }
+  h1 { font-family: var(--k-font-tanka); font-weight: 500; font-size: 26px;
+       letter-spacing: 0.06em; color: var(--kn-ink); margin: 0 0 8px; }
+  .lede { color: var(--kn-ink-faint); font-size: 13.5px; margin: 0 0 40px; }
+  h2 { font-family: var(--k-font-tanka); font-weight: 500; font-size: 17px;
+       letter-spacing: 0.04em; color: var(--kn-ink); margin: 38px 0 10px;
+       padding-top: 22px; border-top: 1px solid var(--kn-hairline); }
+  p { margin: 0 0 14px; font-size: 14.5px; }
+  .meta { margin-top: 48px; font-size: 12.5px; color: var(--kn-ink-faint); }
+  a.mail { color: var(--kn-gold-1); }
+  .leaf { border-radius: 4% 72% 6% 72%; display: inline-block; }
+  .g-fuji { background: linear-gradient(135deg, #C3B5DC, #9483BE); }
+</style>
+</head>
+<body>
+<main class="doc">
+  <a class="home" href="index.html"><span class="leaf g-fuji dot"></span>言の葉 kotoha</a>
+
+  <h1>プライバシーポリシー</h1>
+  <p class="lede">言の葉（kotoha、以下「本アプリ」）は、あなたの歌と心を、できるだけあなたの手もとに置くことを大切にしています。本アプリにおける個人情報・利用者情報の取り扱いを、以下のとおり定めます。</p>
+
+  <h2>運営者</h2>
+  <p>本アプリは studio. slayuicorn（個人。以下「運営者」）が運営します。<br />
+  お問い合わせ先：<a class="mail" href="mailto:kotoha.studio.slayuicorn@gmail.com">kotoha.studio.slayuicorn@gmail.com</a></p>
+
+  <h2>取得する情報と保存場所</h2>
+  <p>本アプリは、起動時に匿名のアカウントを自動的に作成します。あなたが詠んだ歌・歌集・お気に入り・テーマ・各種の記録は、この端末の中に保存されると同時に、運営者が利用する Google のクラウド（Firebase Authentication / Cloud Firestore、保存先は日本・東京リージョン）に保存・同期されます。これは、機種を変えても庭が残るようにするためです。</p>
+  <p>Apple または Google でサインインした場合は、その認証にともなうアカウント識別子（および提供される場合はメールアドレス）を、同じアカウントを引き継ぐために用います。</p>
+
+  <h2>利用目的</h2>
+  <p>取得した情報は、(1) あなたの歌と庭の保存・同期、(2) 機種変更や再インストール時の復元、(3) AIによる歌の整形（下記）、(4) お問い合わせへの対応、のためにのみ利用します。広告には利用しません。</p>
+
+  <h2>外部サービス・委託先と国外移転</h2>
+  <p>本アプリは、保存・同期・認証のために Google LLC（Firebase）を、AIによる歌の整形のために Anthropic, PBC（Claude API）を利用します。いずれも米国の事業者であり、これらのサービスの利用にともない、情報が国外の事業者に取り扱われる場合があります。運営者は、これらを上記の利用目的の範囲でのみ用います。</p>
+
+  <h2>AIによる整形について</h2>
+  <p>「問いから詠む」「日記から詠む」を使うとき、あなたが入力した文章と選んだ心の色は、歌に整えるために運営者のサーバー（Cloud Functions）を経由して Anthropic 社の API へ送信されます。送信した文章は、その整形のためにのみ用いられます。</p>
+
+  <h2>共有カードについて</h2>
+  <p>歌を画像として書き出すとき、あなたの名前は入りません。</p>
+
+  <h2>アカウントとデータの削除</h2>
+  <p>設定の「アカウントと庭を、消す」から、いつでもアカウントとクラウド上のデータを削除できます。削除すると、同期されたデータと匿名アカウントは消えます（端末内のデータも消去されます）。</p>
+
+  <h2>安全管理と第三者提供</h2>
+  <p>取得した情報は、上記の委託（Google・Anthropic）を除き、あなたの同意なく第三者へ提供しません。法令にもとづく開示を求められた場合を除きます。</p>
+
+  <h2>開示・訂正・削除等のご請求</h2>
+  <p>ご自身の情報の開示・訂正・利用停止・削除をご希望の場合は、上記のお問い合わせ先までご連絡ください。多くはアプリ内の削除機能でも対応できます。</p>
+
+  <h2>未成年の方へ</h2>
+  <p>本アプリは13歳未満を主たる対象としていません。未成年の方は、保護者の同意のうえでご利用ください。</p>
+
+  <h2>今後の機能について</h2>
+  <p>風・連歌など、利用者どうしで歌が行き交う機能を提供する際には、その時点で本ポリシーを改定し、匿名での交換や通報・モデレーションの取り扱いを追記します。</p>
+
+  <h2>改定について</h2>
+  <p>本ポリシーは、必要に応じて改定することがあります。重要な変更はアプリ内でお知らせします。</p>
+
+  <p class="meta">最終更新：2026年6月18日</p>
+</main>
+</body>
+</html>
