@@ -51,6 +51,8 @@
   .navlinks .links-inline { display: flex; gap: 30px; }
   .cta { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; letter-spacing: 0.14em; color: var(--kn-paper); background: var(--kn-ink); border-radius: 999px; padding: 11px 22px; border: none; cursor: pointer; white-space: nowrap; transition: opacity .2s; }
   .cta .ig { flex: 0 0 auto; }
+  /* nav内では .navlinks a の色指定が .cta より詳細度が高いので、ピルの文字色を戻す */
+  .navlinks a.cta, .navlinks a.cta:hover { color: var(--kn-paper); }
   .cta:hover { opacity: 0.82; }
   .cta.lg { padding: 16px 30px; font-size: 13px; }
   .navlinks .menutoggle { display: none; }
